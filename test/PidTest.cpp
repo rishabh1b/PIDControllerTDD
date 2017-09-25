@@ -16,26 +16,26 @@
  */
 TEST(PIDTest, testCompute) {
   std::shared_ptr<Pid> pid = std::make_shared < Pid > (0.1, 0.001, 0.03, 1);
-  pid->setReference(5);
+  pid->setReference(4);
   double currentvelocity = pid->compute(1);
-  EXPECT_EQ(0.1, currentvelocity);
-  EXPECT_EQ(0.2, pid->compute(currentvelocity));
+  EXPECT_NEAR(2.2003, currentvelocity, 0.0001);
+  EXPECT_NEAR(2.02066, pid->compute(currentvelocity), 0.0001);
 
   pid->setReference(4);
   // double currentvelocity = pid->compute(1);
-  EXPECT_EQ(0.1, currentvelocity);
-  EXPECT_EQ(0.2, pid->compute(currentvelocity));
+  EXPECT_NEAR(2.2003, currentvelocity, 0.0001);
+  EXPECT_NEAR(2.02066, pid->compute(currentvelocity), 0.0001);
 }
 
 /**
  * @brief Test initialization of gains and the get functions
  */
 TEST(PIDTest, testGainInitialization) {
-  std::shared_ptr<Pid> pid = std::make_shared < Pid > (0.1, 0.01, 0.5, 1);
+  std::shared_ptr<Pid> pid = std::make_shared < Pid > (1, 1, 5, 1);
 
-  EXPECT_EQ(0.1, pid->getKp());
-  EXPECT_EQ(0.01, pid->getKi());
-  EXPECT_EQ(0.5, pid->getKd());
+  EXPECT_EQ(1, pid->getKp());
+  EXPECT_EQ(1, pid->getKi());
+  EXPECT_EQ(5, pid->getKd());
 }
 
 /**
