@@ -33,8 +33,7 @@ Pid::Pid(double kp, double ki, double kd, double deltat)
 void Pid::setReference(double reference) {
   currentReference = reference;
   // Refresh the error and accumulators
-  lastError = 0;
-  accumulator = 0;
+  refresh();
 }
 
 /**
