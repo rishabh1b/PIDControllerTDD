@@ -2,7 +2,7 @@
  *  @file      pid.cpp
  *  @brief     PID Class implementation
  *  @details   Implementation of the PID class to compute velocity as a result of a PID controller
- *  @author    Rishabh Biyani (patnolan33)
+ *  @author    Rishabh Biyani (rishabh1b)
  *  @copyright GNU Public License.
  */
 
@@ -16,7 +16,7 @@
  * @param Kd initial value for Kd
  * @param dt initial value for dt
  */
-Pid::Pid(double kp, double kd, double ki, double deltat)
+Pid::Pid(double kp, double ki, double kd, double deltat)
     : kp(kp),
       ki(ki),
       kd(kd),
@@ -31,7 +31,10 @@ Pid::Pid(double kp, double kd, double ki, double deltat)
  * @param reference - reference velocity to be achieved
  */
 void Pid::setReference(double reference) {
-  return;
+  currentReference = reference;
+  // Refresh the error and accumulators
+  lastError = 0;
+  accumulator = 0;
 }
 
 /**
@@ -40,8 +43,13 @@ void Pid::setReference(double reference) {
  * @return velocity computed after one time step by the controller
  */
 double Pid::compute(double currentVelocity) {
+  double err = currentReference - currentVelocity;
+  accumulator = accumulator + err;
 
-  return 0;
+  double controlSignal = kp * err + kd * (err - lastError) / deltat
+      + ki * accumulator * deltat;
+  lastError = err;
+  return currentVelocity + controlSignal;
 }
 
 /**
@@ -49,7 +57,7 @@ double Pid::compute(double currentVelocity) {
  * @return kp gain
  */
 double Pid::getKp() {
-  return 0;
+  return kp;
 }
 
 /**
@@ -57,7 +65,7 @@ double Pid::getKp() {
  * @return ki gain
  */
 double Pid::getKi() {
-  return 0;
+  return ki;
 }
 
 /**
@@ -65,7 +73,7 @@ double Pid::getKi() {
  * @return Kd gain
  */
 double Pid::getKd() {
-  return 0;
+  return kd;
 }
 
 /**
@@ -73,7 +81,7 @@ double Pid::getKd() {
  * @param kp New Kp value
  */
 void Pid::setKp(double kp) {
-  return;
+  this->kp = kp;
 }
 
 /**
@@ -81,7 +89,7 @@ void Pid::setKp(double kp) {
  * @param ki New Ki value
  */
 void Pid::setKi(double ki) {
-  return;
+  this->ki = ki;
 }
 
 /**
@@ -89,12 +97,13 @@ void Pid::setKi(double ki) {
  * @param kd New Kd value
  */
 void Pid::setKd(double kd) {
-  return;
+  this->kd = kd;
 }
 
 /**
  * @brief reinitialize the values for accumulator and lastError
  */
 void Pid::refresh() {
-  return;
+  lastError = 0;
+  accumulator = 0;
 }
