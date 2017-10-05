@@ -10,7 +10,6 @@
 #define INCLUDE_PID_H_
 
 class Pid {
-
  public:
   /**
    * @brief PID constructor
@@ -90,7 +89,6 @@ class Pid {
    * @brief variable to keep a track of current reference
    */
   double currentReference;
-
 };
 
 #endif /* INCLUDE_PID_H_ */
